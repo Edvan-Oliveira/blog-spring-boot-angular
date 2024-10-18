@@ -1,0 +1,28 @@
+<button type="button" class="btn btn-danger ms-lg-3 mb-5" [routerLink]="['']">Voltar</button>
+
+<h1>{{ postResponseDTO?.title }}</h1>
+
+<div [innerHTML]="postHtml" class="my-5">
+</div>
+
+<h2 class="mb-5">Comentarios</h2>
+
+<form *ngIf="userToken != null" [formGroup]="commentForm">
+  <div class="mb-3">
+    <textarea formControlName="content" class="form-control" rows="3" placeholder="Adicione um comentário"></textarea>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary px-xl-4 mb-5" (click)="comment()">Comentar</button>
+  </div>
+</form>
+
+
+<div *ngIf="postResponseDTO?.comments">
+  <div class="card mb-3" *ngFor="let comment of postResponseDTO.comments">
+    <div class="card-body">
+      <h5 class="card-title">{{ comment.user.name }}</h5>
+      <h6 class="card-subtitle mb-2 text-body-secondary">{{ comment.createdAt | date: 'd/MM/yyyy HH:mm' }}</h6>
+      <p class="card-text">{{ comment.content }}</p>
+    </div>
+  </div>
+</div>

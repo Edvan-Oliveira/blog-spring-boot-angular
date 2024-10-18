@@ -1,0 +1,21 @@
+<div class="container mt-5">
+  <h2 class="my-3">Cadastro</h2>
+  <form class="row g-3" [formGroup]="registerForm">
+    <div class="col-6">
+      <label for="inputName" class="form-label">Nome</label>
+      <input formControlName="name" type="text" class="form-control" id="inputName" placeholder="Digite seu nome">
+    </div>
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">Email</label>
+      <input formControlName="email" type="email" class="form-control" id="inputEmail4" placeholder="exemplo@email.com">
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">Password</label>
+      <input formControlName="password" type="password" class="form-control" id="inputPassword4" placeholder="Digite sua senha">
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary px-xl-4" (click)="register()">Salvar</button>
+      <button type="button" class="btn btn-danger ms-lg-3" [routerLink]="['']">Cancelar</button>
+    </div>
+  </form>
+</div>

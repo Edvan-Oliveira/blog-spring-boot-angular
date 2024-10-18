@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS public.user (
+    id CHAR(36) PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    email VARCHAR(60) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);

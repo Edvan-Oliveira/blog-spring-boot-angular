@@ -1,0 +1,14 @@
+<div class="container mt-5">
+  <h2 class="my-3">Publicação</h2>
+  <form class="row g-3" [formGroup]="postForm">
+    <div class="col-md-12">
+      <label for="inputTitle" class="form-label">Título</label>
+      <input formControlName="title" type="email" class="form-control" id="inputTitle" placeholder="Digite o título da publicação">
+    </div>
+    <p-editor formControlName="content" [style]="{ height: '320px' }"/>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary px-xl-4" (click)="save()">Salvar</button>
+      <button type="button" class="btn btn-danger ms-lg-3" [routerLink]="['']">Cancelar</button>
+    </div>
+  </form>
+</div>

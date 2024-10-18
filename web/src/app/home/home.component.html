@@ -1,0 +1,23 @@
+<div class="card">
+  <p-tabView>
+    <p-tabPanel header="Publicações">
+
+      <div class="card mb-3" *ngFor="let post of posts$ | async; index as i">
+        <div class="card-body">
+          <h5 class="card-title">{{ post.title }}</h5>
+          <a [routerLink]="['/publicacao/', post.id]" class="card-link">Ir para publicação</a>
+        </div>
+      </div>
+
+    </p-tabPanel>
+    <p-tabPanel header="Álbuns de Fotos">
+      <div class="card mb-3" *ngFor="let album of albums$ | async; index as i">
+        <div class="card-body">
+          <h5 class="card-title">{{ album.title }}</h5>
+          <a [routerLink]="['/album/', album.id]" class="card-link">Ir para o album</a>
+        </div>
+      </div>
+
+    </p-tabPanel>
+  </p-tabView>
+</div>

@@ -1,0 +1,17 @@
+<div class="container mt-5">
+  <h2 class="my-3">Login</h2>
+  <form class="row g-3" [formGroup]="loginForm">
+    <div class="col-md-12">
+      <label for="inputEmail" class="form-label">Email</label>
+      <input formControlName="email" type="email" class="form-control" id="inputEmail" placeholder="exemplo@email.com">
+    </div>
+    <div class="col-md-12">
+      <label for="inputPassword" class="form-label">Password</label>
+      <input formControlName="password" type="password" class="form-control" id="inputPassword" placeholder="Digite sua senha">
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary px-xl-4" (click)="login()">Entrar</button>
+      <button type="button" class="btn btn-danger ms-lg-3" [routerLink]="['']">Cancelar</button>
+    </div>
+  </form>
+</div>

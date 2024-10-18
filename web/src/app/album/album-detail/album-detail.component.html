@@ -1,0 +1,17 @@
+<button type="button" class="btn btn-danger ms-lg-3 mb-5" [routerLink]="['']">Voltar</button>
+
+<h1>{{ albumResponseDTO?.title }}</h1>
+
+<p-galleria [value]="photos" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="true"
+            indicatorsPosition="left" [responsiveOptions]="responsiveOptions"
+            [containerStyle]="{ 'max-width': '100%','margin-top': '2em' }">
+  <ng-template pTemplate="item" let-item>
+    <img [src]="item.url" style="width: 100%; display: block;"/>
+  </ng-template>
+  <ng-template pTemplate="indicator" let-index>
+            <span style="color: #e9ecef; cursor: pointer">
+                {{ index + 1 }}
+            </span>
+  </ng-template>
+</p-galleria>
+
