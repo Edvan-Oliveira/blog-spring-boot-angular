@@ -1,6 +1,17 @@
-<button type="button" class="btn btn-danger ms-lg-3 mb-5" [routerLink]="['']">Voltar</button>
+<div class="d-flex align-items-center justify-content-between">
+  <button [routerLink]="['']" type="button" class="btn btn-primary ms-lg-3 mb-5">Voltar</button>
+  <button *ngIf="userId != null && userId === albumResponseDTO?.user?.id" type="button"
+          (click)="deleteAlbum()"
+          class="btn btn-danger ms-lg-3 mb-5">
+    Excluir álbum
+  </button>
+</div>
 
-<h1>{{ albumResponseDTO?.title }}</h1>
+<div *ngIf="albumResponseDTO">
+  <h1>{{ albumResponseDTO.title }}</h1>
+  <p class="fw-light">Autor: {{ albumResponseDTO.user.name }} <br>
+    Data: {{ albumResponseDTO.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+</div>
 
 <p-galleria [value]="photos" [showIndicators]="true" [showThumbnails]="false" [showIndicatorsOnItem]="true"
             indicatorsPosition="left" [responsiveOptions]="responsiveOptions"

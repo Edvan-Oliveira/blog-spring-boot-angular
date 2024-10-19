@@ -2,7 +2,9 @@ package sl.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sl.config.storage.service.StorageService;
 import sl.domains.album.Album;
+import sl.domains.photo.Photo;
 import sl.exception.BusinessException;
 import sl.repositories.AlbumRepository;
 import sl.services.AlbumService;
@@ -18,6 +20,7 @@ import static sl.util.SecurityUtil.getAuthenticatedUserId;
 public class AlbumServiceImpl implements AlbumService {
 
     private final AlbumRepository albumRepository;
+    private final StorageService storageService;
 
     @Override
     public List<Album> findAll() {
@@ -45,6 +48,12 @@ public class AlbumServiceImpl implements AlbumService {
         String authenticatedUserId = getAuthenticatedUserId();
         if (authenticatedUserId == null || !authenticatedUserId.equals(album.getUser().getId())) {
             throw new BusinessException("Apenas o autor pode excluir o album.");
+        }
+
+        try {
+            storageService.deleteFiles(album.getPhotos().stream().map(Photo::getUri).toList());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         albumRepository.deleteById(albumId);

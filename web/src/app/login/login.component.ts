@@ -29,12 +29,12 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.loginService.login(this.loginForm.value).subscribe({
         next: response => {
-          LocalStorageUtils.saveUserToken(response.token);
-          this.loginService.setUserLogged(true);
+          LocalStorageUtils.saveAuthenticatedUser(response);
+          this.loginService.setAuthenticatedUser(true);
           this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Login bem-sucedido'});
           this.router.navigate(['']);
         },
-        error: err => this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Ocorreu um erro'})
+      error: err => this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Confirme as informações'})
       })
     } else {
       this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Formulário inválido' });

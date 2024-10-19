@@ -1,11 +1,22 @@
-<button type="button" class="btn btn-danger ms-lg-3 mb-5" [routerLink]="['']">Voltar</button>
+<div class="d-flex align-items-center justify-content-between">
+  <button [routerLink]="['']" type="button" class="btn btn-primary ms-lg-3 mb-5">Voltar</button>
+  <button *ngIf="userId != null && userId === postResponseDTO?.user?.id"
+          (click)="deletePost()"
+          type="button" class="btn btn-danger ms-lg-3 mb-5">
+    Excluir publicação
+  </button>
+</div>
 
-<h1>{{ postResponseDTO?.title }}</h1>
+<div *ngIf="postResponseDTO">
+  <h1>{{ postResponseDTO.title }}</h1>
+  <p class="fw-light">Autor: {{ postResponseDTO.user.name }} <br>
+    Data: {{ postResponseDTO.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+</div>
 
 <div [innerHTML]="postHtml" class="my-5">
 </div>
 
-<h2 class="mb-5">Comentarios</h2>
+<h2 class="mb-5">Comentários</h2>
 
 <form *ngIf="userToken != null" [formGroup]="commentForm">
   <div class="mb-3">
@@ -18,11 +29,12 @@
 
 
 <div *ngIf="postResponseDTO?.comments">
-  <div class="card mb-3" *ngFor="let comment of postResponseDTO.comments">
+  <div class="card mb-3" *ngFor="let comment of postResponseDTO.comments; index as i">
     <div class="card-body">
       <h5 class="card-title">{{ comment.user.name }}</h5>
       <h6 class="card-subtitle mb-2 text-body-secondary">{{ comment.createdAt | date: 'd/MM/yyyy HH:mm' }}</h6>
-      <p class="card-text">{{ comment.content }}</p>
+      <p class="card-text mb-1">{{ comment.content }}</p>
+      <a *ngIf="userId === comment.user.id" href="javascript:void(0)" (click)="deleteComment(comment.id, i)" class="link-danger">Excluir comentário</a>
     </div>
   </div>
 </div>

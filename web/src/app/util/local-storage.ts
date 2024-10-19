@@ -1,12 +1,17 @@
+import {ILoginResponseDTO} from "../login/models/ILoginResponseDTO";
+
 export class LocalStorageUtils {
 
+  private static readonly USER_ID = 'app.userId';
   private static readonly TOKEN = 'app.token';
 
-  static saveUserToken(token: string) {
-    localStorage.setItem(this.TOKEN, token);
+  static saveAuthenticatedUser(loginResponseDTO: ILoginResponseDTO) {
+    localStorage.setItem(this.USER_ID, loginResponseDTO.userId);
+    localStorage.setItem(this.TOKEN, loginResponseDTO.token);
   }
 
-  static clearUserToken() {
+  static clearAuthenticatedUser() {
+    localStorage.removeItem(this.USER_ID);
     localStorage.removeItem(this.TOKEN);
   }
 
@@ -14,7 +19,11 @@ export class LocalStorageUtils {
     return localStorage.getItem(this.TOKEN);
   }
 
-  static isUserLogged() {
+  static getUserId() {
+    return localStorage.getItem(this.USER_ID);
+  }
+
+  static isAuthenticatedUser() {
     return this.getUserToken() != null;
   }
 }

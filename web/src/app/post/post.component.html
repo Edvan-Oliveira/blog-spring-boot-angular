@@ -4,6 +4,9 @@
     <div class="col-md-12">
       <label for="inputTitle" class="form-label">Título</label>
       <input formControlName="title" type="email" class="form-control" id="inputTitle" placeholder="Digite o título da publicação">
+      <div class="text-danger" *ngIf="postForm.get('title')?.errors?.['required'] && postForm.get('title')?.touched">
+        Título é obrigatório
+      </div>
     </div>
     <p-editor formControlName="content" [style]="{ height: '320px' }"/>
     <div class="col-12">

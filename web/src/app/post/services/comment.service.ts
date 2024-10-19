@@ -19,4 +19,9 @@ export class CommentService {
     const headers = new HttpHeaders({'Authorization': `Bearer ${LocalStorageUtils.getUserToken()}`});
     return this.http.post<ICommentResponseDTO>(this.URL, comment, {headers})
   }
+
+  deleteById(commentId: string) {
+    const headers = new HttpHeaders({'Authorization': `Bearer ${LocalStorageUtils.getUserToken()}`});
+    return this.http.delete(`${this.URL}/${commentId}`, {headers})
+  }
 }

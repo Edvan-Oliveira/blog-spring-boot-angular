@@ -7,15 +7,20 @@ import {PostComponent} from "./post/post.component";
 import {AlbumComponent} from "./album/album.component";
 import {PostDetailComponent} from "./post/post-detail/post-detail.component";
 import {AlbumDetailComponent} from "./album/album-detail/album-detail.component";
+import {authGuard} from "./services/auth.guard";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'registrar', component: RegisterComponent },
   { path: 'entrar', component: LoginComponent },
-  { path: 'publicacao', component: PostComponent },
+  { path: 'publicacao', component: PostComponent, canActivate: [authGuard] },
   { path: 'publicacao/:id', component: PostDetailComponent },
-  { path: 'album', component: AlbumComponent },
-  { path: 'album/:id', component: AlbumDetailComponent }
+  { path: 'album', component: AlbumComponent, canActivate: [authGuard]  },
+  { path: 'album/:id', component: AlbumDetailComponent },
+
+  { path: 'nao-encontrado', component: NotFoundComponent },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

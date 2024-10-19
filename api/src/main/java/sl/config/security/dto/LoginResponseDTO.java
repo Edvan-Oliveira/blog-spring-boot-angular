@@ -1,4 +1,4 @@
 package sl.config.security.dto;
 
-public record LoginResponseDTO(String token) {
+public record LoginResponseDTO(String userId, String token) {
 }

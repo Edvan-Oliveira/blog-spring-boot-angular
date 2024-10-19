@@ -18,6 +18,7 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String url;
+    private String uri;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")

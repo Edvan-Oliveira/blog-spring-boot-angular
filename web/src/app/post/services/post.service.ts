@@ -28,4 +28,9 @@ export class PostService {
     return this.http.get<IPostResponseDTO>(`${this.URL}/${postId}`)
   }
 
+  deleteById(postId: string) {
+    const headers = new HttpHeaders({'Authorization': `Bearer ${LocalStorageUtils.getUserToken()}`});
+    return this.http.delete(`${this.URL}/${postId}`, {headers})
+  }
+
 }

@@ -10,7 +10,7 @@ import {ILoginResponseDTO} from "../models/ILoginResponseDTO";
 export class LoginService {
 
   private readonly URL: string = 'http://localhost:8080/api/auth/login'
-  private userLoggedSubject = new Subject<boolean>();
+  private authenticatedUserSubject = new Subject<boolean>();
 
   constructor(private http: HttpClient) { }
 
@@ -18,12 +18,12 @@ export class LoginService {
     return this.http.post<ILoginResponseDTO>(this.URL, auth)
   }
 
-  setUserLogged(value: boolean): void {
-    this.userLoggedSubject.next(value);
+  setAuthenticatedUser(value: boolean): void {
+    this.authenticatedUserSubject.next(value);
   }
 
-  getUserLoggedObservable(): Observable<boolean> {
-    return this.userLoggedSubject.asObservable();
+  getAuthenticatedUserObservable(): Observable<boolean> {
+    return this.authenticatedUserSubject.asObservable();
   }
 
 }

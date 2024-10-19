@@ -27,6 +27,7 @@ import { AlbumDetailComponent } from './album/album-detail/album-detail.componen
 import {GalleriaModule} from "primeng/galleria";
 import {FieldsetModule} from "primeng/fieldset";
 import {CommentService} from "./post/services/comment.service";
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {CommentService} from "./post/services/comment.service";
     PostComponent,
     AlbumComponent,
     PostDetailComponent,
-    AlbumDetailComponent
+    AlbumDetailComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -56,13 +58,7 @@ import {CommentService} from "./post/services/comment.service";
     FieldsetModule
   ],
   providers: [
-    PostService,
-    RegisterService,
-    MessageService,
-    LoginService,
-    AlbumService,
-    LoginService,
-    CommentService
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

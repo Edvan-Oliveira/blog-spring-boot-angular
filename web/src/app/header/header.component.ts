@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  isUserLogged = false;
+  isAuthenticatedUser = false;
 
   private subscription!: Subscription;
 
@@ -21,11 +21,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ) {}
 
   ngOnInit() {
-    this.subscription = this.loginService.getUserLoggedObservable().subscribe(value => {
-      console.log(value)
-      this.isUserLogged = value;
+    this.subscription = this.loginService.getAuthenticatedUserObservable().subscribe(value => {
+      this.isAuthenticatedUser = value;
     });
-    this.isUserLogged = LocalStorageUtils.isUserLogged();
+    this.isAuthenticatedUser = LocalStorageUtils.isAuthenticatedUser();
   }
 
   ngOnDestroy() {
@@ -35,8 +34,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    LocalStorageUtils.clearUserToken();
-    this.loginService.setUserLogged(false);
+    LocalStorageUtils.clearAuthenticatedUser();
+    this.loginService.setAuthenticatedUser(false);
     this.router.navigate(['']);
   }
 }

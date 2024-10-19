@@ -27,4 +27,9 @@ export class AlbumService {
     return this.http.get<IAlbumResponseDTO>(`${this.URL}/${albumId}`)
   }
 
+  deleteById(albumId: string) {
+    const headers = new HttpHeaders({'Authorization': `Bearer ${LocalStorageUtils.getUserToken()}`});
+    return this.http.delete(`${this.URL}/${albumId}`, {headers})
+  }
+
 }

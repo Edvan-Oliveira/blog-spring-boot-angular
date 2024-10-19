@@ -86,7 +86,7 @@ public class AlbumController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return Photo.builder().url(photoUrl).build();
+        return Photo.builder().url(photoUrl).uri(filename).build();
     }
 
     private void validatePhoto(MultipartFile photo) {

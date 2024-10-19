@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS public.photo (
     id CHAR(36) PRIMARY KEY,
     url VARCHAR(500) NOT NULL,
+    uri VARCHAR(60) NOT NULL,
     album_id CHAR(36) NOT NULL
 );
 

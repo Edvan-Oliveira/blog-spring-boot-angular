@@ -4,6 +4,9 @@
     <div class="col-md-12">
       <label for="inputTitle" class="form-label">Título</label>
       <input formControlName="title" type="text" class="form-control" id="inputTitle" placeholder="Digite o título do álbum">
+      <div class="text-danger" *ngIf="albumForm.get('title')?.errors?.['required'] && albumForm.get('title')?.touched">
+        Título é obrigatório
+      </div>
     </div>
 
     <p-fileUpload

@@ -4,14 +4,26 @@
     <div class="col-6">
       <label for="inputName" class="form-label">Nome</label>
       <input formControlName="name" type="text" class="form-control" id="inputName" placeholder="Digite seu nome">
+      <div class="text-danger" *ngIf="registerForm.get('name')?.errors?.['required'] && registerForm.get('name')?.touched">
+        Nome é obrigatório
+      </div>
     </div>
     <div class="col-md-6">
       <label for="inputEmail4" class="form-label">Email</label>
       <input formControlName="email" type="email" class="form-control" id="inputEmail4" placeholder="exemplo@email.com">
+      <div class="text-danger" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+        E-mail é obrigatório
+      </div>
+      <div class="text-danger" *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched">
+        E-mail em formato inválido
+      </div>
     </div>
     <div class="col-md-6">
-      <label for="inputPassword4" class="form-label">Password</label>
+      <label for="inputPassword4" class="form-label">Senha</label>
       <input formControlName="password" type="password" class="form-control" id="inputPassword4" placeholder="Digite sua senha">
+      <div class="text-danger" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">
+        Senha é obrigatória
+      </div>
     </div>
     <div class="col-12">
       <button type="submit" class="btn btn-primary px-xl-4" (click)="register()">Salvar</button>
