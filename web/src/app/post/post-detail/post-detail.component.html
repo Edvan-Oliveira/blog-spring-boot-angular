@@ -29,12 +29,12 @@
 
 
 <div *ngIf="postResponseDTO?.comments">
-  <div class="card mb-3" *ngFor="let comment of postResponseDTO.comments; index as i">
+  <div class="card mb-3" *ngFor="let comment of postResponseDTO.comments">
     <div class="card-body">
       <h5 class="card-title">{{ comment.user.name }}</h5>
       <h6 class="card-subtitle mb-2 text-body-secondary">{{ comment.createdAt | date: 'd/MM/yyyy HH:mm' }}</h6>
       <p class="card-text mb-1">{{ comment.content }}</p>
-      <a *ngIf="userId === comment.user.id" href="javascript:void(0)" (click)="deleteComment(comment.id, i)" class="link-danger">Excluir comentário</a>
+      <a *ngIf="userId === comment.user.id" href="javascript:void(0)" (click)="deleteComment(comment.id)" class="link-danger">Excluir comentário</a>
     </div>
   </div>
 </div>

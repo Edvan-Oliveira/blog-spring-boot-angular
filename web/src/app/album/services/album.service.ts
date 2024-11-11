@@ -14,7 +14,7 @@ export class AlbumService {
   constructor(private http: HttpClient) {
   }
 
-  save(album: any) {
+  save(album: FormData) {
     const headers = new HttpHeaders({'Authorization': `Bearer ${LocalStorageUtils.getUserToken()}`});
     return this.http.post(this.URL, album, {headers})
   }

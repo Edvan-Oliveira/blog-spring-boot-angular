@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HomeComponent} from "./home.component";
 import {TabViewModule} from "primeng/tabview";
 import {RouterLink} from "@angular/router";
@@ -8,10 +8,11 @@ import {RouterLink} from "@angular/router";
   declarations: [
     HomeComponent
   ],
-    imports: [
-        CommonModule,
-        TabViewModule,
-        RouterLink
-    ]
+  imports: [
+    CommonModule,
+    TabViewModule,
+    RouterLink
+  ]
 })
-export class HomeModule { }
+export class HomeModule {
+}

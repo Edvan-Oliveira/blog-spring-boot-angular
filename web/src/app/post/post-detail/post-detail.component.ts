@@ -1,90 +1,94 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {PostService} from "../services/post.service";
 import {IPostResponseDTO} from "../models/IPostResponseDTO";
 import {MessageService} from "primeng/api";
 import {LocalStorageUtils} from "../../util/local-storage";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CommentService} from "../services/comment.service";
 import {ICommentRequestDTO} from "../models/ICommentRequestDTO";
+import * as postSelector from "../state/post.selector";
+import {Store} from "@ngrx/store";
+import {IAppState} from "../../state/app.state";
+import * as postActions from "../state/post.actions";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-post-detail',
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss'
 })
-export class PostDetailComponent implements OnInit {
+export class PostDetailComponent implements OnInit, OnDestroy {
+
+  selectPostById$ = this.store.select(postSelector.selectPostById);
+  selectDeletePost$ = this.store.select(postSelector.selectDeletePost);
 
   postResponseDTO!: IPostResponseDTO;
-  postHtml = '';
+  postHtml: string = '';
   userToken: string | null = null;
   userId: string | null = null;
   commentForm: FormGroup;
 
+  private subscriptions: Subscription[] = []
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private postService: PostService,
-    private commentService: CommentService,
     private messageService: MessageService,
-    private router: Router
-  ) {
+    private router: Router,
+    private store: Store<IAppState>) {
     this.commentForm = this.fb.group({
       content: ['', [Validators.required]]
     })
   }
 
   ngOnInit() {
+    this.subscribeLoadPostById();
+    this.subscribeDeletePost();
     this.userId = LocalStorageUtils.getUserId();
     this.userToken = LocalStorageUtils.getUserToken();
+    this.route.params.subscribe(params => this.store.dispatch(postActions.loadPostById({postId: params['id']})));
+  }
 
-    this.route.params.subscribe(params => {
-      this.postService.findById(params['id']).subscribe({
-        next: response => {
-          this.postResponseDTO = response;
-          this.postHtml = response.content;
-        },
-        error: err => this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Ocorreu um erro'})
-      });
-    });
+  ngOnDestroy() {
+    this.store.dispatch(postActions.clearPostById());
+    this.store.dispatch(postActions.clearDeletePostById());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  private subscribeLoadPostById() {
+    this.subscriptions.push(this.selectPostById$.subscribe(post => {
+      if (post != null) {
+        this.postResponseDTO = post;
+        this.postHtml = post.content;
+      }
+    }));
+  }
+
+  private subscribeDeletePost() {
+    this.subscriptions.push(this.selectDeletePost$.subscribe(response => {
+      if (response) {
+        this.router.navigate(['']);
+      }
+    }));
   }
 
   deletePost() {
-    this.postService.deleteById(this.postResponseDTO.id).subscribe({
-      next: response => {
-        this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Publicação excluída'});
-        this.router.navigate(['']);
-      },
-      error: err => this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Ocorreu um erro'})
-    });
+    this.store.dispatch(postActions.deletePostById({postId: this.postResponseDTO.id}))
   }
 
   comment() {
     if (this.commentForm.valid) {
       const comment: ICommentRequestDTO = {
         content: this.commentForm.controls['content'].value,
-        post: { id: this.postResponseDTO.id  }
+        post: {id: this.postResponseDTO.id}
       }
-      this.commentService.save(comment).subscribe({
-        next: response => {
-          this.postResponseDTO.comments.push(response);
-          this.commentForm.reset();
-          this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Comentário adicionado'});
-        },
-        error: err => this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Ocorreu um erro'})
-      });
+      this.commentForm.reset();
+      this.store.dispatch(postActions.saveComment({comment}));
     } else {
-      this.messageService.add({ severity: 'warn', summary: 'Aviso', detail: 'Formulário inválido' });
+      this.messageService.add({severity: 'warn', summary: 'Aviso', detail: 'Formulário inválido'});
     }
   }
 
-  deleteComment(commentId: string, index: number) {
-    this.commentService.deleteById(commentId).subscribe({
-      next: response => {
-        this.postResponseDTO.comments.splice(index, 1);
-        this.messageService.add({severity: 'success', summary: 'Sucesso', detail: 'Comentário excluído'});
-      },
-      error: err => this.messageService.add({severity: 'error', summary: 'Erro', detail: 'Ocorreu um erro'})
-    });
+  deleteComment(commentId: string) {
+    this.store.dispatch(postActions.deleteCommentById({commentId}));
   }
 }
