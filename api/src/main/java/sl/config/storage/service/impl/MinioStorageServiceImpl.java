@@ -1,7 +1,6 @@
 package sl.config.storage.service.impl;
 
 import io.minio.*;
-import io.minio.http.Method;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import lombok.extern.log4j.Log4j2;
@@ -11,17 +10,18 @@ import sl.config.AppApplicationProperties;
 import sl.config.storage.service.StorageService;
 
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 
 @Log4j2
 @Service
 public class MinioStorageServiceImpl implements StorageService {
 
+    private final AppApplicationProperties properties;
     private final String appBucket;
     private final MinioClient minioClient;
 
     public MinioStorageServiceImpl(AppApplicationProperties properties, MinioClient minioClient) {
+        this.properties = properties;
         this.appBucket = properties.getMinio().getAppBucket();
         this.minioClient = minioClient;
     }
@@ -52,12 +52,7 @@ public class MinioStorageServiceImpl implements StorageService {
     @Override
     public String uploadFileAndGenerateAccessUrl(MultipartFile file, String objectName) throws Exception {
         uploadFile(file, objectName);
-        return minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(appBucket)
-                        .object(objectName)
-                        .build());
+        return String.format("%s/%s/%s", properties.getStorageUrl(), appBucket, objectName);
     }
 
     private void uploadFile(MultipartFile file, String objectName) throws Exception {

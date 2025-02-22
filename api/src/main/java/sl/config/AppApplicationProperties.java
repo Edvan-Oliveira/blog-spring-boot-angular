@@ -13,6 +13,7 @@ public class AppApplicationProperties {
 
     private MinioProperties minio;
     private SecurityProperties security;
+    private String storageUrl;
 
     @Getter
     @Setter

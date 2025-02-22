@@ -17,6 +17,15 @@ services:
       MINIO_ROOT_USER: app-s3
       MINIO_ROOT_PASSWORD: ZiZTQtMGM3ZC00NWNmL
       MINIO_DEFAULT_BUCKETS: app
+    command: >
+      /bin/sh -c "
+        minio server /bitnami/minio/data & 
+        sleep 10 && 
+        mc alias set local http://localhost:9000 app-s3 ZiZTQtMGM3ZC00NWNmL &&
+        mc mb local/app/photos &&
+        mc anonymous set download local/app/photos &&
+        wait
+      "
 
   app-postgres:
     container_name: app-postgres
